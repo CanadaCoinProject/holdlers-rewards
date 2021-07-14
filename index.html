@@ -1,34 +1,177 @@
-<html lanng="us">
-    <head>
-        <script src="src/cada.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/3.0.0-rc.5/web3.min.js"></script>
-        <script src="src/index.js"></script>
-    </head>
-    <body>
+<html lang='us'>
+<head>
+    <script src='src/cada.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/web3/3.0.0-rc.5/web3.min.js'></script>
+    <script src='src/index.js'></script>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' href='src/infopage.css'>
+    <!--<link rel="shortcut icon" type="image/jpg" href="img/favicon.png"/>-->
+</head>
+<body>
+<header>
 
-        <form> 
-            <label for="addressInput">Address</label>
-            <input id="addressInput" name="address" />
-            <button type="button" id="send">Get Info</button>
-        </form>
+    <a class='logotext'> <img class='logo' src='img/simple_cada.svg' alt='Canada Coin'></a>
 
-        <script>
 
-            document.getElementById("send").addEventListener("click", async function(e){
+    <a class='introtext'>CADA<br>reward tracker</a>
+    <nav>
+        <ul id='navList'>
+            <li>
+                <a href='https://exchange.pancakeswap.finance/#/swap?outputCurrency=0x221AfB058453B1d228BfdAc3b1aAB42f41e37489'
+                   target='_blank' class='navLinks'>
+                    Buy
+                </a>
+            </li>
+            <li>
+                <a href='https://canadacoin.finance/' target='_blank' class='navLinks'>Home</a>
+            </li>
+            <li><a href='https://poocoin.app/tokens/0x221afb058453b1d228bfdac3b1aab42f41e37489'
+                   target='_blank' class='navLinks'>
+                Chart
+            </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<!--background-->
 
-                //here lets check i the address has been submitted already
-                let address = (document.getElementById("addressInput").value || "").trim();
-                
-                let accountInfo = null;
+<!--Background end-->
+<main>
+    <img id='backgroundLogo' src='img/canadacoingray.svg'>
+    <article>
+        <div class='textCenter'>
+            <h2>Fill in your wallet address below to track your rewards.</h2>
+        </div>
 
-                if(address.length == 0) {
-                    return false;
-                }
+        <div class='tracker'>
+            <form class='input'>
+                <div class='inputContainer'>
+                    <!--  <label for='addressInput'>Address</label>-->
+                    <input id='addressInput' name='address' placeholder='Your wallet address'/>
+                    <button type='button' id='send' class='disabled' disabled>GO <img id='buttonIcon'
+                                                                                      src='./img/bi_arrow-right.svg'
+                                                                                      alt='Arrow'></button>
+                </div>
+            </form>
+            <div id='boxesContainer'>
+                <div class='box'>
+                    <h3>
+                        CADA balance
+                    </h3>
+                    <p class='amount'>0</p>
+                    <p class='sum'>$0</p>
+                </div>
+                <div class='box'>
+                    <h3>
+                        CADA earned from holding
+                    </h3>
+                    <p class='amount'>0</p>
+                    <p class='sum'>$0</p>
+                </div>
+                <div id='topTwenty' class='box fullWidth'>
+                    <h3 class='textCenter'>
+                        Top 20 holders
+                    </h3>
+                    <div id='topTwentyHeader'>
+                        <div class='topTwentyHeaderItem'>
+                            <p class='textCenter'>Address</p>
+                        </div>
+                        <div class='topTwentyHeaderItem'>
+                            <p class='textCenter'>Balance</p>
+                        </div>
+                        <div class='topTwentyHeaderItem'>
+                            <p class='textCenter'>CADA Earned</p>
+                        </div>
+                    </div>
+                    <div id='topTwentyList'>
+                        <!-- Temporary list mapped from JS -->
+                    </div>
+                </div>
 
-                let result = await getAccountInfo(address)
-                
-                console.log(result)
-            });
-        </script>
-    </body>
+            </div>
+        </div>
+    </article>
+</main>
+<footer>
+    <h1>FOOTER GOES HERE!</h1>
+</footer>
+
+
+<script>
+    ////navbar
+    window.addEventListener('scroll', function () {
+        let header = document.querySelector('header');
+        if (window.scrollY > 80) {
+            header.setAttribute('class', 'sticky');
+            header.animate({top: '=0'});
+        } else {
+            header.classList.remove('sticky');
+        }
+        /* header.classList.toggle('sticky', window.scrollY > 100);*/
+    });
+    ////navbar end
+
+    ///bg start
+
+    ///bg end
+
+    let addressInput = document.getElementById('addressInput');
+
+    let button = document.getElementById('send');
+
+    addressInput.addEventListener('input', function (e) {
+        if (addressInput.value === '') {
+            button.disabled = true;
+            button.setAttribute('class', 'disabled');
+        } else {
+            button.disabled = false;
+            button.classList.remove('disabled');
+        }
+    });
+
+    button.addEventListener('click', async function (e) {
+
+        //here lets check i the address has been submitted already
+        let address = (document.getElementById('addressInput').value || '').trim();
+
+        let accountInfo = null;
+
+        if (address.length == 0) {
+            return false;
+        }
+
+        let result = await getAccountInfo(address);
+
+        console.log(result);
+    });
+
+
+
+    for (let i = 0; i < 20; i++) {
+        let listItemContainer = document.createElement('div')
+        listItemContainer.className = "listItemContainer"
+        let addressBox = document.createElement('div')
+        let balanceBox = document.createElement('div')
+        let earningsBox = document.createElement('div')
+
+        addressBox.className = 'holderInfoBox'
+        balanceBox.className = 'holderInfoBox'
+        earningsBox.className = 'holderInfoBox'
+
+        addressBox.innerText = '0x00c6c9e5B99a1818E43698E7295baF8bBD0b5378D'
+        balanceBox.innerText = '10,000,000,000,000'
+        earningsBox.innerText = '700,000,000'
+
+        listItemContainer.appendChild(addressBox)
+        listItemContainer.appendChild(balanceBox)
+        listItemContainer.appendChild(earningsBox)
+
+
+        document.getElementById('topTwentyList').appendChild(listItemContainer);
+    }
+
+
+</script>
+</body>
 </html>
