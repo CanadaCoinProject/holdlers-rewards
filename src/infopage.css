@@ -43,7 +43,7 @@ header {
     align-items: center;
     transition: 0.6s;
     padding: 20px 50px;
-    z-index: 10000000;
+    z-index: 900;
     /*background-color: #DD3333;*/
 }
 
@@ -64,6 +64,16 @@ header.sticky > nav > #navList > li > .navLinks {
 
 nav {
     display: flex;
+}
+
+#hamburgerBtn {
+    background-color: transparent;
+    padding: 0;
+    border: none;
+    display: none;
+}
+.hamburgerWhite {
+    display: none;
 }
 
 #navList {
@@ -118,7 +128,7 @@ main {
 
 article {
     margin: 120px auto;
-    padding: 30px;
+    padding: 30px ;
     border-radius: 10px;
     width: 100%;
     max-width: 1100px;
@@ -221,6 +231,11 @@ form {
     font-size: 14px;
 }
 
+.prefix {
+    font-weight: bold;
+    display: none;
+}
+
 .sum {
     font-weight: bold;
 }
@@ -236,6 +251,76 @@ footer {
 }
 /* END FOOTER */
 
+/* MENU */
+
+#menu {
+    background-color: #DD3333;
+    position: fixed;
+    padding: 30px;
+    display: none;
+    top: 0;
+    right: -500px;
+    height: 100vh;
+    width: 60%;
+    z-index: 1000;
+}
+
+.slideIn {
+    animation: slideLeft .7s ease forwards;
+}
+
+.slideOut {
+    animation: slideRight 0.7s ease forwards;
+}
+
+#menuList {
+    list-style: none;
+    padding: 0;
+}
+
+#menuLogo {
+    margin-top: 10px;
+}
+
+#closeBtn {
+    background-color: transparent;
+    border: none;
+    height: 30px;
+    width: 30px;
+    padding: 0;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.closeIcon {
+    width: 100%;
+}
+
+.menuItem {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.menuIcon {
+    margin-right: 10px;
+    height: 32px;
+    width: 32px;
+}
+
+hr {
+    background-color: #fff;
+    border-color: #fff;
+}
+
+.menuLinks {
+    color: #fff;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+/* END MENU */
 
 /*GENERIC CLASSES*/
 .fullWidth {
@@ -264,11 +349,43 @@ footer {
     #backgroundLogo {
         width: 100%;
     }
+
+    #addressText, #balanceText, #earningsText {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 850px) {
+    article {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    #topTwenty {
+        padding: 0;
+    }
+    #topTwentyHeader {
+        display: none;
+    }
+
+    .listItemContainer {
+        display: block;
+    }
+    #addressText, #balanceText, #earningsText {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        font-size: 16px;
+        text-align: left;
+    }
+
+    .prefix {
+        font-weight: bold;
+        display: inline-block;
+    }
 }
 
 @media screen and (max-width: 600px) {
-    #topTwentyList {
-        padding-left: 30px;
+    #addressText, #balanceText, #earningsText {
         font-size: 14px;
     }
 
@@ -280,12 +397,26 @@ footer {
 @media screen and (max-width: 550px) {
     article {
         margin: 60px auto;
-        padding-right: 0;
-        padding-left: 0;
     }
 
     header, header.sticky {
         padding: 20px;
+    }
+
+    header.sticky > #hamburgerBtn > .hamburgerBlack{
+        display: none;
+    }
+
+    header.sticky > #hamburgerBtn > .hamburgerWhite{
+        display: block;
+    }
+
+    nav {
+        display: none;
+    }
+
+    #hamburgerBtn {
+        display: block;
     }
 
     .introtext {
@@ -302,11 +433,21 @@ footer {
         padding: 20px;
     }
 
-    #topTwentyList > li {
+    #addressText, #balanceText, #earningsText {
         font-size: 12px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+    }
+}
+
+@media screen and (max-width: 414px) {
+    #addressInput {
+        width: 80%;
+    }
+
+    #send {
+        width: 21%;
     }
 }
 
@@ -361,6 +502,29 @@ footer {
     }
     100% {
         top: 0
+    }
+}
+
+@keyframes slideLeft {
+    0% {
+        right: -500px;
+        display: none;
+    }
+    100% {
+        right: 0
+    }
+}
+
+@keyframes slideRight {
+    0% {
+        right: 0;
+
+    }
+    99% {
+        right: -500px ;
+    }
+    100% {
+        display: none;
     }
 }
 

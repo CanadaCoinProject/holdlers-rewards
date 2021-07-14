@@ -33,6 +33,10 @@
             </li>
         </ul>
     </nav>
+    <button id='hamburgerBtn'>
+        <img src='./img/hamburger-white.svg' class='hamburgerWhite' alt='close'>
+        <img src='./img/hamburger-black.svg' class='hamburgerBlack' alt='close'>
+    </button>
 </header>
 <!--background-->
 
@@ -97,19 +101,72 @@
     <h1>FOOTER GOES HERE!</h1>
 </footer>
 
+<div id='menu'>
+    <button id='closeBtn'>
+        <img src='./img/close-white.svg' class='closeIcon' alt='close'>
+    </button>
+    <img src='./img/canadacoingray.svg' id='menuLogo' alt='cada-coin'>
+    <hr>
+    <ul id='menuList'>
+        <li>
+            <div class='menuItem'>
+                <img src='./img/money-white.svg' alt='icon' class='menuIcon'>
+                <a href='https://exchange.pancakeswap.finance/#/swap?outputCurrency=0x221AfB058453B1d228BfdAc3b1aAB42f41e37489'
+                   target='_blank' class='menuLinks'>
+                    Buy
+                </a>
+            </div>
+        </li>
+        <li>
+            <div class='menuItem'>
+                <img src='./img/home-white.svg' alt='icon' class='menuIcon'>
+                <a href='https://canadacoin.finance/' target='_blank' class='menuLinks'>Home</a>
+            </div>
+        </li>
+        <li>
+            <div class='menuItem'>
+                <img src='./img/chart-white.svg' alt='icon' class='menuIcon'>
+                <a href='https://poocoin.app/tokens/0x221afb058453b1d228bfdac3b1aab42f41e37489'
+                   target='_blank' class='menuLinks'>
+                    Chart
+                </a>
+            </div>
+        </li>
+    </ul>
+</div>
 
 <script>
     ////navbar
     window.addEventListener('scroll', function () {
         let header = document.querySelector('header');
-        if (window.scrollY > 80) {
-            header.setAttribute('class', 'sticky');
-            header.animate({top: '=0'});
-        } else {
-            header.classList.remove('sticky');
-        }
-        /* header.classList.toggle('sticky', window.scrollY > 100);*/
+        header.classList.toggle('sticky', window.scrollY > 80);
     });
+
+    let menu = document.getElementById('menu');
+
+    document.getElementById('hamburgerBtn').addEventListener('click', function () {
+        menu.style.display = 'block';
+        menu.classList.remove('slideOut');
+        setTimeout(() => {
+            menu.classList.add('slideIn');
+        }, 1);
+
+    });
+
+    document.getElementById('closeBtn').addEventListener('click', function () {
+
+        menu.style.display = 'block';
+        menu.style.right = '0';
+        menu.classList.remove('slideIn');
+        setTimeout(() => {
+            menu.classList.add('slideOut');
+            setTimeout(() => {
+                menu.style.display = 'none';
+                menu.style.right = '-500px';
+            }, 700);
+        }, 1);
+    });
+
     ////navbar end
 
     ///bg start
@@ -146,27 +203,42 @@
         console.log(result);
     });
 
-
-
     for (let i = 0; i < 20; i++) {
-        let listItemContainer = document.createElement('div')
-        listItemContainer.className = "listItemContainer"
-        let addressBox = document.createElement('div')
-        let balanceBox = document.createElement('div')
-        let earningsBox = document.createElement('div')
+        let listItemContainer = document.createElement('div');
+        listItemContainer.className = 'listItemContainer';
+        let addressBox = document.createElement('div');
+        let balanceBox = document.createElement('div');
+        let earningsBox = document.createElement('div');
 
-        addressBox.className = 'holderInfoBox'
-        balanceBox.className = 'holderInfoBox'
-        earningsBox.className = 'holderInfoBox'
+        addressBox.className = 'holderInfoBox';
+        balanceBox.className = 'holderInfoBox';
+        earningsBox.className = 'holderInfoBox';
 
-        addressBox.innerText = '0x00c6c9e5B99a1818E43698E7295baF8bBD0b5378D'
-        balanceBox.innerText = '10,000,000,000,000'
-        earningsBox.innerText = '700,000,000'
+        let address = '0x00c6c9e5B99a1818E43698E7295baF8bBD0b5378D';
+        let balance = '10,000,000,000,000';
+        let earnings = '700,000,000';
 
-        listItemContainer.appendChild(addressBox)
-        listItemContainer.appendChild(balanceBox)
-        listItemContainer.appendChild(earningsBox)
+        addressBox.innerHTML = `
+        <p id='addressText'>
+            <span class='prefix'>Address: </span>
+            ${address}
+        </p>`;
 
+        balanceBox.innerHTML = `
+        <p id='addressText'>
+            <span class='prefix'>Balance: </span>
+            ${balance}
+        </p>`;
+
+        earningsBox.innerHTML = `
+        <p id='earningsText'>
+            <span class='prefix'>Earnings: </span>
+            ${earnings}
+        </p>`;
+
+        listItemContainer.appendChild(addressBox);
+        listItemContainer.appendChild(balanceBox);
+        listItemContainer.appendChild(earningsBox);
 
         document.getElementById('topTwentyList').appendChild(listItemContainer);
     }
