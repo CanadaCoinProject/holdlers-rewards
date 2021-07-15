@@ -1,0 +1,49 @@
+body {
+    background-color: #000410;
+}
+
+* {
+    color: #fff;
+}
+
+#backgroundLogo {
+    animation: logoGlow 6s ease infinite; /* Should be used for dark mode */
+}
+
+
+/* HEADER */
+
+.hamburgerBlack {
+    display: none;
+}
+
+/* END HEADER */
+
+/* RESULTS AREA */
+
+
+
+.box {
+    background-color: #00000088;
+}
+
+
+
+/* END RESULTS AREA */
+
+/* KEYFRAMES */
+
+
+@keyframes logoGlow {
+    0% {
+        filter: drop-shadow(0px 0px 2px rgba(221, 51, 51, 0.1));
+    }
+    50% {
+        filter: drop-shadow(0px 0px 6px rgba(221, 51, 51, 0.8));
+    }
+    100% {
+        filter: drop-shadow(0px 0px 4px rgba(221, 51, 51, 0.1));
+    }
+}
+
+/* END KEYFRAMES */

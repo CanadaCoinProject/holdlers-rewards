@@ -5,7 +5,8 @@
     <script src='src/index.js'></script>
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' href='src/infopage.css'>
+    <link rel='stylesheet' href='src/infopage.css'> <!-- DO NOT PUT A LINK TAG ABOVE THIS ONE -->
+    <link rel='stylesheet' href='src/generic.css'>
     <!--<link rel="shortcut icon" type="image/jpg" href="img/favicon.png"/>-->
 </head>
 <body>
@@ -32,6 +33,10 @@
             </a>
             </li>
         </ul>
+
+        <button id='darkModeToggle' onclick='changeCSS()'>
+            <img src='./img/sun-black.svg' alt='toggle icon' id='toggleIcon'>
+        </button>
     </nav>
     <button id='hamburgerBtn'>
         <img src='./img/hamburger-white.svg' class='hamburgerWhite' alt='close'>
@@ -53,9 +58,10 @@
                 <div class='inputContainer'>
                     <!--  <label for='addressInput'>Address</label>-->
                     <input id='addressInput' name='address' placeholder='Your wallet address'/>
-                    <button type='button' id='send' class='disabled' disabled>GO <img id='buttonIcon'
-                                                                                      src='./img/bi_arrow-right.svg'
-                                                                                      alt='Arrow'></button>
+                    <button type='button' id='send' class='disabled' disabled>
+                        GO
+                        <img id='buttonIcon' src='./img/bi_arrow-right.svg' alt='Arrow'>
+                    </button>
                 </div>
             </form>
             <div id='boxesContainer'>
@@ -155,6 +161,9 @@
             </div>
         </li>
     </ul>
+    <button id='darkModeMenu' onclick='changeCSS()'>
+        <img src='./img/sun-black.svg' alt='toggle icon' id='menuDarkModeIcon'>
+    </button>
 </div>
 
 
@@ -168,35 +177,35 @@
     // The following code is to animate the hamburger menu in and out
 
     let menu = document.getElementById('menu');
-    let overlay = document.getElementById('overlay')
+    let overlay = document.getElementById('overlay');
 
     document.getElementById('hamburgerBtn').addEventListener('click', function () {
         menu.style.display = 'block';
         menu.classList.remove('slideOut');
-        overlay.style.display = 'block'
+        overlay.style.display = 'block';
         setTimeout(() => {
-            overlay.classList.add('visible')
+            overlay.classList.add('visible');
             menu.classList.add('slideIn');
-            document.body.classList.add('stopScroll')
+            document.body.classList.add('stopScroll');
         }, 1);
 
     });
 
-    document.getElementById('closeBtn').addEventListener('click', closeMenu)
-    overlay.addEventListener('click', closeMenu)
+    document.getElementById('closeBtn').addEventListener('click', closeMenu);
+    overlay.addEventListener('click', closeMenu);
 
     function closeMenu() {
         menu.style.display = 'block';
         menu.style.right = '0';
         menu.classList.remove('slideIn');
-        overlay.classList.remove('visible')
-        document.body.classList.remove('stopScroll')
+        overlay.classList.remove('visible');
+        document.body.classList.remove('stopScroll');
         setTimeout(() => {
             menu.classList.add('slideOut');
             setTimeout(() => {
                 menu.style.display = 'none';
                 menu.style.right = '-500px';
-                overlay.style.display = 'none'
+                overlay.style.display = 'none';
             }, 700);
         }, 1);
     };
@@ -283,10 +292,64 @@
     // END TOP 20 HOLDERS
 
     // FOOTER
-    let date = new Date()
-    let year = date.getFullYear()
-    document.getElementById('copyrightText').innerText = `Copyright © ${year.toString()} Canada Coin. All rights reserved.`
+    let date = new Date();
+    let year = date.getFullYear();
+    document.getElementById('copyrightText').innerText = `Copyright © ${year.toString()} Canada Coin. All rights reserved.`;
     // END FOOTER
+
+    // DARK MODE
+    const backgroundLogo = document.getElementById('backgroundLogo')
+    const toggleIcon = document.getElementById('toggleIcon')
+    const menuToggleIcon = document.getElementById('menuDarkModeIcon')
+
+    function changeCSS() {
+        let oldLink = document.getElementsByTagName('link').item(0);
+        let newLink = document.createElement('link');
+
+        newLink.setAttribute('rel', 'stylesheet');
+        newLink.setAttribute('type', 'text/css');
+
+        if (oldLink.getAttribute('href').includes('infopage-dark')) {
+            newLink.setAttribute('href', './src/infopage.css');
+            backgroundLogo.setAttribute('src', './img/canadacoingray.svg');
+            toggleIcon.setAttribute('src', './img/moon-black.svg')
+            menuToggleIcon.setAttribute('src','./img/moon-white.svg' )
+        } else {
+            newLink.setAttribute('href', './src/infopage-dark.css');
+            backgroundLogo.setAttribute('src', './img/canadacoindark.svg');
+            toggleIcon.setAttribute('src','./img/sun-white.svg')
+            menuToggleIcon.setAttribute('src','./img/sun-white.svg' )
+        }
+        document.getElementsByTagName('head').item(0).replaceChild(newLink, oldLink);
+        localStorage.setItem('darkMode', newLink.getAttribute('href'))
+
+    }
+
+    function setInitialCss() {
+        const initialCss = localStorage.getItem('darkMode')
+
+        let oldLink = document.getElementsByTagName('link').item(0)
+        let newLink = document.createElement('link')
+
+        newLink.setAttribute('rel', 'stylesheet');
+        newLink.setAttribute('type', 'text/css');
+        newLink.setAttribute('href', initialCss);
+        document.getElementsByTagName('head').item(0).replaceChild(newLink, oldLink);
+
+        if (initialCss.includes('infopage-dark')) {
+            backgroundLogo.setAttribute('src', './img/canadacoindark.svg')
+            toggleIcon.setAttribute('src', './img/sun-white.svg')
+            menuToggleIcon.setAttribute('src','./img/sun-white.svg' )
+        } else {
+            backgroundLogo.setAttribute('src', './img/canadacoingray.svg');
+            toggleIcon.setAttribute('src', './img/moon-black.svg')
+            menuToggleIcon.setAttribute('src','./img/moon-white.svg' )
+        }
+    }
+
+    setInitialCss()
+
+    // END DARK MODE
 
 </script>
 </body>
