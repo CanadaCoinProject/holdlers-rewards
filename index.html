@@ -98,9 +98,31 @@
     </article>
 </main>
 <footer>
-    <h1>FOOTER GOES HERE!</h1>
+    <div class='socialContainer'>
+        <a href='https://www.facebook.com/thecanadacoin/?ref=py_c' class='socialLinks'>
+            <img src='./img/facebook.svg' alt='social media icon' class='socialIcon'>
+        </a>
+        <a href='https://www.instagram.com/thecanadacoin/' class='socialLinks'>
+            <img src='./img/instagram.svg' alt='social media icon' class='socialIcon'>
+        </a>
+        <a href='#' class='socialLinks'>
+            <img src='./img/youtube.svg' alt='social media icon' class='socialIcon'>
+        </a>
+        <a href='https://twitter.com/thecanadacoin' class='socialLinks'>
+            <img src='./img/twitter.svg' alt='social media icon' class='socialIcon'>
+        </a>
+        <a href='https://t.me/CADACOIN' class='socialLinks'>
+            <img src='./img/telegram.svg' alt='social media icon' class='socialIcon'>
+        </a>
+    </div>
+
+    <p id='copyrightText'>
+        <!-- Text injected from JS -->
+    </p>
+
 </footer>
 
+<div id='overlay'></div>
 <div id='menu'>
     <button id='closeBtn'>
         <img src='./img/close-white.svg' class='closeIcon' alt='close'>
@@ -135,6 +157,7 @@
     </ul>
 </div>
 
+
 <script>
     ////navbar
     window.addEventListener('scroll', function () {
@@ -142,30 +165,41 @@
         header.classList.toggle('sticky', window.scrollY > 80);
     });
 
+    // The following code is to animate the hamburger menu in and out
+
     let menu = document.getElementById('menu');
+    let overlay = document.getElementById('overlay')
 
     document.getElementById('hamburgerBtn').addEventListener('click', function () {
         menu.style.display = 'block';
         menu.classList.remove('slideOut');
+        overlay.style.display = 'block'
         setTimeout(() => {
+            overlay.classList.add('visible')
             menu.classList.add('slideIn');
+            document.body.classList.add('stopScroll')
         }, 1);
 
     });
 
-    document.getElementById('closeBtn').addEventListener('click', function () {
+    document.getElementById('closeBtn').addEventListener('click', closeMenu)
+    overlay.addEventListener('click', closeMenu)
 
+    function closeMenu() {
         menu.style.display = 'block';
         menu.style.right = '0';
         menu.classList.remove('slideIn');
+        overlay.classList.remove('visible')
+        document.body.classList.remove('stopScroll')
         setTimeout(() => {
             menu.classList.add('slideOut');
             setTimeout(() => {
                 menu.style.display = 'none';
                 menu.style.right = '-500px';
+                overlay.style.display = 'none'
             }, 700);
         }, 1);
-    });
+    };
 
     ////navbar end
 
@@ -173,6 +207,7 @@
 
     ///bg end
 
+    // INPUT AREA
     let addressInput = document.getElementById('addressInput');
 
     let button = document.getElementById('send');
@@ -203,6 +238,9 @@
         console.log(result);
     });
 
+    // END INPUT AREA
+
+    // TOP 20 HOLDERS
     for (let i = 0; i < 20; i++) {
         let listItemContainer = document.createElement('div');
         listItemContainer.className = 'listItemContainer';
@@ -242,7 +280,13 @@
 
         document.getElementById('topTwentyList').appendChild(listItemContainer);
     }
+    // END TOP 20 HOLDERS
 
+    // FOOTER
+    let date = new Date()
+    let year = date.getFullYear()
+    document.getElementById('copyrightText').innerText = `Copyright © ${year.toString()} Canada Coin. All rights reserved.`
+    // END FOOTER
 
 </script>
 </body>
