@@ -57,7 +57,7 @@
 
         <div class='tracker'>
             <form class='input'>
-                <div class='inputContainer'>
+                <div id="incont" class='inputContainer'>
                     <!--  <label for='addressInput'>Address</label>-->
                     <input id='addressInput' name='address' placeholder='Your wallet address'/>
                     <button type='button' id='send' class='disabled' disabled>
@@ -71,14 +71,14 @@
                     <h3>
                         CADA balance
                     </h3>
-                    <p class='amount'>0</p>
+                    <p id="balance" class='amount'>0</p>
                     <p class='sum'>$0</p>
                 </div>
                 <div class='box'>
                     <h3>
                         CADA earned from holding
                     </h3>
-                    <p class='amount'>0</p>
+                    <p id="rewards" class='amount'>0</p>
                     <p class='sum'>$0</p>
                 </div>
                 <div id='topTwenty' class='box fullWidth'>
@@ -180,6 +180,7 @@
 
 <script>
     ////navbar
+    localStorage.setItem('darkMode', './src/infopage.css');
     window.addEventListener('scroll', function () {
         let header = document.querySelector('header');
         header.classList.toggle('sticky', window.scrollY > 80);
@@ -228,13 +229,25 @@
     ///bg end
 
     // INPUT AREA
+    let button = document.getElementById('send');
+    if (localStorage.getItem("walletaddr")){
+        //if there is a key in local storage, it will use it and put it in the key field
+        document.getElementById('addressInput').value = localStorage.getItem("walletaddr");
+        button.disabled = false;
+        button.classList.remove('disabled');
+    }
+
     let addressInput = document.getElementById('addressInput');
 
-    let button = document.getElementById('send');
+    
 
     addressInput.addEventListener('input', function (e) {
+
         if (addressInput.value === '') {
-            button.disabled = true;
+            if (!localStorage.getItem("walletaddr")){
+               // button.disabled = true;
+            };
+            
             button.setAttribute('class', 'disabled');
         } else {
             button.disabled = false;
@@ -243,19 +256,39 @@
     });
 
     button.addEventListener('click', async function (e) {
+        let balancefield = document.getElementById('balance');
+        let rewardfield = document.getElementById('rewards');
+        balancefield.innerHTML = "0";
+        rewardfield.innerHTML = "0";
+        wallet = document.getElementById('addressInput').value;
+        if (wallet.length > 40){
+            document.getElementById('incont').classList.remove("wrongaddr");
+            localStorage.setItem("walletaddr", wallet);
+       //here lets check i the address has been submitted already
+       let address = (document.getElementById('addressInput').value || '').trim();
 
-        //here lets check i the address has been submitted already
-        let address = (document.getElementById('addressInput').value || '').trim();
+    let accountInfo = null;
 
-        let accountInfo = null;
+    if (address.length == 0) {
+     return false;
+    }
 
-        if (address.length == 0) {
-            return false;
+    let result = await getAccountInfo(address);
+
+   
+    
+    result.realBalance = result.realBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    result.accountReward = result.accountReward.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    balancefield.innerHTML = result.realBalance;
+    rewardfield.innerHTML = result.accountReward;
+       
+       
+        }
+        
+        else{
+            document.getElementById('incont').classList.add("wrongaddr");
         }
 
-        let result = await getAccountInfo(address);
-
-        console.log(result);
     });
 
     // END INPUT AREA

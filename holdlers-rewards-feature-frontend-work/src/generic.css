@@ -14,6 +14,17 @@ html, body {
     overflow: hidden;
 }
 
+
+/*WIGGLE STUFF*/
+.wrongaddr{
+    animation: shake 0.5s;
+    animation-iteration-count: 1;
+    border: 4px solid #DD3333;
+    border-radius: 10px;
+}
+
+
+
 /* HEADER */
 header {
     position: absolute;
@@ -587,5 +598,21 @@ hr {
         text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
     }
 }
+
+@keyframes shake {
+    0% { transform: translate(1px, 0px); }
+    10% { transform: translate(-1px, 0px); }
+    20% { transform: translate(-3px, 0px); }
+    30% { transform: translate(3px, 0px); }
+    40% { transform: translate(1px, 0px); }
+    50% { transform: translate(-1px, 0px); }
+    60% { transform: translate(-3px, 0px); }
+    70% { transform: translate(3px, 0px); }
+    80% { transform: translate(-1px, 0px); }
+    90% { transform: translate(1px, 0px); }
+    100% { transform: translate(1px, 0px); }
+  }
+
+
 
 /* END KEYFRAMES */
