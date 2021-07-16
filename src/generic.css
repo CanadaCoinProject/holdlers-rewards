@@ -224,6 +224,9 @@ form {
     width: 100%;
     padding-top: 10px;
     padding-bottom: 10px;
+    transition: 0.5s;
+    opacity: 0;
+    text-decoration: none;
 }
 
 .holderInfoBox {

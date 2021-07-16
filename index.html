@@ -1,34 +1,460 @@
-<html lanng="us">
-    <head>
-        <script src="src/cada.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/3.0.0-rc.5/web3.min.js"></script>
-        <script src="src/index.js"></script>
-    </head>
-    <body>
+<html lang='us'>
+<head>
+    <script src='src/cada.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/web3/3.0.0-rc.5/web3.min.js'></script>
+    <script src='src/index.js'></script>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' href='src/infopage.css'> <!-- DO NOT PUT A LINK TAG ABOVE THIS ONE -->
+    <link rel='stylesheet' href='src/generic.css'>
+    <link rel="shortcut icon" type="image/jpg" href="img/simple_cada.svg"/>
+    <title>Canada Coin Reward Tracker</title>
+    <!--<link rel="shortcut icon" type="image/jpg" href="img/favicon.png"/>-->
+</head>
+<body>
+<header>
+    
+    <a class='logotext'> <img class='logo' src='img/simple_cada.svg' alt='Canada Coin'></a>
 
-        <form> 
-            <label for="addressInput">Address</label>
-            <input id="addressInput" name="address" />
-            <button type="button" id="send">Get Info</button>
-        </form>
 
-        <script>
+    <a class='introtext'>CADA<br>reward tracker</a>
+    <nav>
+        <ul id='navList'>
+            <li>
+                <a href='https://canadacoin.finance/' target='_blank' class='navLinks'>Home</a>
+            </li>
+            <li>
+                <a href='https://exchange.pancakeswap.finance/#/swap?outputCurrency=0x221AfB058453B1d228BfdAc3b1aAB42f41e37489'
+                   target='_blank' class='navLinks'>
+                    Buy
+                </a>
+            </li>
+            <li><a href='https://poocoin.app/tokens/0x221afb058453b1d228bfdac3b1aab42f41e37489'
+                   target='_blank' class='navLinks'>
+                Chart
+            </a>
+            </li>
+        </ul>
 
-            document.getElementById("send").addEventListener("click", async function(e){
+        <button id='darkModeToggle' onclick='changeCSS()'>
+            <img src='./img/sun-white.svg' alt='toggle icon' id='sunWhite'>
+            <img src='./img/moon-black.svg' alt='toggle icon' id='moonBlack'>
+            <img src='./img/moon-white.svg' alt='toggle icon' id='moonWhite'>
+        </button>
+    </nav>
+    <button id='hamburgerBtn'>
+        <img src='./img/hamburger-white.svg' class='hamburgerWhite' alt='close'>
+        <img src='./img/hamburger-black.svg' class='hamburgerBlack' alt='close'>
+    </button>
+</header>
+<!--background-->
 
-                //here lets check i the address has been submitted already
-                let address = (document.getElementById("addressInput").value || "").trim();
-                
-                let accountInfo = null;
+<!--Background end-->
+<main>
+    <img id='backgroundLogo' src='img/canadacoingray.svg'>
+    <article>
+        <div class='textCenter'>
+            <h2>Fill in your wallet address below to track your rewards.</h2>
+        </div>
 
-                if(address.length == 0) {
-                    return false;
+        <div class='tracker'>
+            <form class='input'>
+                <div id="incont" class='inputContainer'>
+                    <!--  <label for='addressInput'>Address</label>-->
+                    <input id='addressInput' name='address' placeholder='Your wallet address'/>
+                    <button type='button' id='send' class='disabled' disabled>
+                        GO
+                        <img id='buttonIcon' src='./img/bi_arrow-right.svg' alt='Arrow'>
+                    </button>
+                </div>
+            </form>
+            <div id='boxesContainer'>
+                <div class='box'>
+                    <h3>
+                        CADA balance
+                    </h3>
+                    <p id="balance" class='amount'>0</p>
+                    <p id="usdbal"class='sum'>$0</p>
+                </div>
+                <div class='box'>
+                    <h3>
+                        CADA earned from holding
+                    </h3>
+                    <p id="rewards" class='amount'>0</p>
+                    <p id="usdrew" class='sum'>$0</p>
+                </div>
+                <div id='topTwenty' class='box fullWidth'>
+                    <h3 class='textCenter'>
+                        Top 20 holders
+                    </h3>
+                    <div id='topTwentyHeader'>
+                        <div class='topTwentyHeaderItem'>
+                            <p class='textCenter'>Address</p>
+                        </div>
+                        <div class='topTwentyHeaderItem'>
+                            <p class='textCenter'>Balance</p>
+                        </div>
+                        <div class='topTwentyHeaderItem'>
+                            <p class='textCenter'>CADA Earned</p>
+                        </div>
+                    </div>
+                    <div id='topTwentyList'>
+                        <!-- Temporary list mapped from JS -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </article>
+</main>
+<footer>
+    <div class='socialContainer'>
+        <a href='https://www.facebook.com/thecanadacoin/?ref=py_c' target='_blank' class='socialLinks'>
+            <img src='./img/facebook.svg' alt='social media icon' class='socialIcon'>
+        </a>
+        <a href='https://www.instagram.com/thecanadacoin/' target='_blank' class='socialLinks'>
+            <img src='./img/instagram.svg' alt='social media icon' class='socialIcon'>
+        </a>
+       
+        <a href='https://twitter.com/thecanadacoin' target='_blank' class='socialLinks'>
+            <img src='./img/twitter.svg' alt='social media icon' class='socialIcon'>
+        </a>
+        <a href='https://t.me/CADACOIN' target='_blank' class='socialLinks'>
+            <img src='./img/telegram.svg' alt='social media icon' class='socialIcon'>
+        </a>
+    </div>
+
+    <p id='copyrightText'>
+        <!-- Text injected from JS -->
+    </p>
+
+</footer>
+
+<div id='overlay'></div>
+<div id='menu'>
+    <button id='closeBtn'>
+        <img src='./img/close-white.svg' class='closeIcon' alt='close'>
+    </button>
+    <img src='./img/canadacoingray.svg' id='menuLogo' alt='cada-coin'>
+    <hr>
+    <ul class='menuList'>
+        <li>
+            <div class='menuItem'>
+                <img src='./img/home-white.svg' alt='icon' class='menuIcon'>
+                <a href='https://canadacoin.finance/' target='_blank' class='menuLinks'>Home</a>
+            </div>
+        </li>
+        <li>
+            <div class='menuItem'>
+                <img src='./img/money-white.svg' alt='icon' class='menuIcon'>
+                <a href='https://exchange.pancakeswap.finance/#/swap?outputCurrency=0x221AfB058453B1d228BfdAc3b1aAB42f41e37489'
+                   target='_blank' class='menuLinks'>
+                    Buy
+                </a>
+            </div>
+        </li>
+        <li>
+            <div class='menuItem'>
+                <img src='./img/chart-white.svg' alt='icon' class='menuIcon'>
+                <a href='https://poocoin.app/tokens/0x221afb058453b1d228bfdac3b1aab42f41e37489'
+                   target='_blank' class='menuLinks'>
+                    Chart
+                </a>
+            </div>
+        </li>
+    </ul>
+    <hr>
+    <ul class='menuList'>
+        <li>
+            <div class='menuItem'>
+                <!-- Image src is changed with JS -->
+                <img src='./img/sun-black.svg' alt='toggle icon' id='menuDarkModeIcon' class='menuIcon'>
+                <a onclick='changeCSS()' target='_blank' class='menuLinks' id='darkModeText'>
+                    <!-- Text injected from JS -->
+                </a>
+            </div>
+        </li>
+    </ul>
+</div>
+
+
+<script>
+    ////navbar
+    top20();
+    if (!localStorage.getItem("darkMode")){
+        localStorage.setItem('darkMode', './src/infopage.css');
+    }
+    
+    window.addEventListener('scroll', function () {
+        let header = document.querySelector('header');
+        header.classList.toggle('sticky', window.scrollY > 80);
+    });
+
+    // The following code is to animate the hamburger menu in and out
+
+    let menu = document.getElementById('menu');
+    let overlay = document.getElementById('overlay');
+
+    document.getElementById('hamburgerBtn').addEventListener('click', function () {
+        menu.style.display = 'block';
+        menu.classList.remove('slideOut');
+        overlay.style.display = 'block';
+        setTimeout(() => {
+            overlay.classList.add('visible');
+            menu.classList.add('slideIn');
+            document.body.classList.add('stopScroll');
+        }, 1);
+
+    });
+
+    document.getElementById('closeBtn').addEventListener('click', closeMenu);
+    overlay.addEventListener('click', closeMenu);
+
+    function closeMenu() {
+        menu.style.display = 'block';
+        menu.style.right = '0';
+        menu.classList.remove('slideIn');
+        overlay.classList.remove('visible');
+        document.body.classList.remove('stopScroll');
+        setTimeout(() => {
+            menu.classList.add('slideOut');
+            setTimeout(() => {
+                menu.style.display = 'none';
+                menu.style.right = '-500px';
+                overlay.style.display = 'none';
+            }, 700);
+        }, 1);
+    };
+
+    ////navbar end
+
+    ///bg start
+
+    ///bg end
+
+    // INPUT AREA
+    let button = document.getElementById('send');
+    if (localStorage.getItem("walletaddr")){
+        //if there is a key in local storage, it will use it and put it in the key field
+        document.getElementById('addressInput').value = localStorage.getItem("walletaddr");
+        button.disabled = false;
+        button.classList.remove('disabled');
+    }
+
+    let addressInput = document.getElementById('addressInput');
+
+    
+
+    addressInput.addEventListener('input', function (e) {
+
+        if (addressInput.value === '') {
+            if (!localStorage.getItem("walletaddr")){
+               // button.disabled = true;
+            };
+            
+            button.setAttribute('class', 'disabled');
+        } else {
+            button.disabled = false;
+            button.classList.remove('disabled');
+        }
+    });
+
+    button.addEventListener('click', async function (e) {
+        let balancefield = document.getElementById('balance');
+        let rewardfield = document.getElementById('rewards');
+        let usdbal = document.getElementById('usdbal');;
+        let usdrew = document.getElementById('usdrew');;
+        balancefield.innerHTML = "0";
+        rewardfield.innerHTML = "0";
+        usdbal.innerHTML = "0 $";
+        usdrew.innerHTML = "0 $";
+        wallet = document.getElementById('addressInput').value;
+        if (wallet.length == 42){
+            document.getElementById('incont').classList.remove("wrongaddr");
+            localStorage.setItem("walletaddr", wallet);
+       //here lets check i the address has been submitted already
+       let address = (document.getElementById('addressInput').value || '').trim();
+
+    let accountInfo = null;
+
+    if (address.length == 0) {
+     return false;
+    }
+
+    let result = await getAccountInfo(address);
+
+
+    let request = new XMLHttpRequest();
+                request.open("GET", "https://api.pancakeswap.info/api/v2/tokens/0x221afb058453b1d228bfdac3b1aab42f41e37489");
+                request.send();
+                request.onload = function(){
+                if (request.status == 200){
+        
+                let answer = JSON.parse(request.response);
+                    let currprice = answer.data.price;
+                    let holdusd = answer.data.price.toString() * result.realBalance.toString();
+                    let gainusd = answer.data.price.toString() * result.accountReward.toString();  
+                    
+                    usdbal.innerHTML = holdusd.toFixed(2) + " $";
+                    usdrew.innerHTML = gainusd.toFixed(2) + " $";
+                    }
+                    
+                else{
+                    usdbal.innerHTML = "Currently unavailable";
+                    usdrew.innerHTML = "Currently unavailable";
+                    }
                 }
+   
+    let truebal = result.realBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    let gainbal = result.accountReward.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    balancefield.innerHTML = truebal;
+    rewardfield.innerHTML = gainbal;
+       
+       
+        }
+        
+        else{
+            document.getElementById('incont').classList.add("wrongaddr");
+        }
 
-                let result = await getAccountInfo(address)
-                
-                console.log(result)
-            });
-        </script>
-    </body>
+    });
+
+    // END INPUT AREA
+
+   
+    
+    // TOP 20 HOLDERS
+    async function top20(){
+         for (let i = 0; i < 20; i++) {
+        let topanswer;
+        let listItemContainer = document.createElement('a');
+        listItemContainer.className = 'listItemContainer';
+        
+        let addressBox = document.createElement('div');
+        let balanceBox = document.createElement('div');
+        let earningsBox = document.createElement('div');
+        
+        addressBox.className = 'holderInfoBox';
+        balanceBox.className = 'holderInfoBox';
+        earningsBox.className = 'holderInfoBox';
+        let topholders = ["0x5019d6797b7a679ca8573d82d38a994fa355d723", "0xe9af29e175a5629618e9b53c945f57ed9661f0b7", "0xa6c8626ef2a55dea2f5b80c55ecca5cbf941c585", "0xd01aaf48710556c5297d72c4c938561ae57a1466", "0xfb8aa6c46b0f8a7f089b2cbd342b97bf0d0dcb26", "0x05f89b063e2656f9b42cfff9865a675495875c6d", "0xc849bad49dc1516f86efe999df950d0b2c4529a7", "0x0c9435abd2eabf5426b58b4e1152326792d90aba", "0x8c89f04716a06bbba2f8056eebdbe009171285e5", "0xdd7d38cd829ffc5f39ff89fac0f510c58f40ed45", "0x1d107c9149e3f75a9404bac353d0cf2fd3c4b7d1", "0x29e257e06cf864840388a75e202cce33c820922d", "0x2d1fdb21dd7388c20250c598b0603ac93b06a6bf", "0x2f0a13518fcf6bd814f576d369143d27fcc0a3a3", "0xd06075f81d8dd5081d90c0b66c686d011d4763d3", "0xbc396e3be72c628eeb5e9075ee3c6b680c934d9f", "0xf7205a618d4347cd964d23ffcd89971ea4be3d9b", "0xbdfa97458aff993f2b44bf27b757fd374594766f",
+        "0x4ac5dafd9dc6af1c31d1f21a59e9403104e0d974", "0xe6648693ea8e43965146f563b191fba33631dd60",
+        "0xe75928a8882a87452d59bb91165a7e309315e326"];
+        
+
+
+        let address = topholders[i];
+       
+        let result = await getAccountInfo(address);
+        
+        let earnings = '700,000,000';
+
+        addressBox.innerHTML = `
+        <p id='addressText'>
+            <span class='prefix'>Address: </span>
+            ${address}
+        </p>`;
+
+        balanceBox.innerHTML = `
+        <p id='addressText'>
+            <span class='prefix'>Balance: </span>
+            ${result.realBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " CADA"}
+        </p>`;
+
+        earningsBox.innerHTML = `
+        <p id='earningsText'>
+            <span class='prefix'>Earnings: </span>
+            ${result.accountReward.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " CADA"}
+        </p>`;
+
+        listItemContainer.appendChild(addressBox);
+        listItemContainer.appendChild(balanceBox);
+        listItemContainer.appendChild(earningsBox);
+
+        document.getElementById('topTwentyList').appendChild(listItemContainer);
+        unfade(listItemContainer)
+        listItemContainer.href = "https://bscscan.com/token/0x221afb058453b1d228bfdac3b1aab42f41e37489?a="+address;
+        listItemContainer.setAttribute("target", "_blank");
+    }
+    }
+
+    function unfade(element) {
+    var op = 0.1;  // initial opacity
+    var timer = setInterval(function () {
+        if (op >= 1){
+            clearInterval(timer);
+        }
+        element.style.opacity = op;
+        element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+        op += op * 0.1;
+    }, 10);
+}
+    
+    
+    // END TOP 20 HOLDERS
+
+    // FOOTER
+    let date = new Date();
+    let year = date.getFullYear();
+    document.getElementById('copyrightText').innerText = `Copyright © ${year.toString()} Canada Coin. All rights reserved.`;
+    // END FOOTER
+
+    // DARK MODE
+    const backgroundLogo = document.getElementById('backgroundLogo');
+    const toggleIcon = document.getElementById('toggleIcon');
+    const menuToggleIcon = document.getElementById('menuDarkModeIcon');
+    const darkModeText = document.getElementById('darkModeText');
+    const header = document.getElementsByTagName('header').item(0)
+
+     function changeCSS() {
+        let oldLink = document.getElementsByTagName('link').item(0);
+        let newLink = document.createElement('link');
+
+        newLink.setAttribute('rel', 'stylesheet');
+        newLink.setAttribute('type', 'text/css');
+
+        // The following if statement is reversed to get it right in the frontend, most likely an async issue
+        if (oldLink.getAttribute('href').includes('infopage-dark')) {
+            newLink.setAttribute('href', './src/infopage.css');
+            backgroundLogo.setAttribute('src', './img/canadacoingray.svg');
+            menuToggleIcon.setAttribute('src', './img/moon-white.svg');
+            darkModeText.innerText = 'Dark theme';
+        } else {
+            newLink.setAttribute('href', './src/infopage-dark.css');
+            backgroundLogo.setAttribute('src', './img/canadacoindark.svg');
+            menuToggleIcon.setAttribute('src', './img/sun-white.svg');
+            darkModeText.innerText = 'Light theme';
+        }
+        document.getElementsByTagName('head').item(0).replaceChild(newLink, oldLink);
+        localStorage.setItem('darkMode', newLink.getAttribute('href'));
+
+    }
+
+    function setInitialCss() {
+        const initialCss = localStorage.getItem('darkMode');
+
+        let oldLink = document.getElementsByTagName('link').item(0);
+        let newLink = document.createElement('link');
+
+        newLink.setAttribute('rel', 'stylesheet');
+        newLink.setAttribute('type', 'text/css');
+        newLink.setAttribute('href', initialCss);
+        document.getElementsByTagName('head').item(0).replaceChild(newLink, oldLink);
+
+        if (initialCss.includes('infopage-dark')) {
+            backgroundLogo.setAttribute('src', './img/canadacoindark.svg');
+            menuToggleIcon.setAttribute('src', './img/sun-white.svg');
+            darkModeText.innerText = 'Light theme';
+        } else {
+            backgroundLogo.setAttribute('src', './img/canadacoingray.svg');
+            menuToggleIcon.setAttribute('src', './img/moon-white.svg')
+            darkModeText.innerText = 'Dark theme';
+        }
+    }
+
+    setInitialCss();
+    // END DARK MODE
+
+</script>
+</body>
 </html>
