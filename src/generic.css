@@ -68,6 +68,7 @@ header.sticky {
     font-size: 1.2em;
 }
 
+
 nav {
     display: flex;
     align-items: center;
@@ -307,7 +308,7 @@ footer {
     animation: slideRight 0.7s ease forwards;
 }
 
-#menuList {
+.menuList {
     list-style: none;
     padding: 0;
 }

@@ -25,16 +25,13 @@ body {
 
 /* HEADER */
 
-header > nav > #darkModeToggle > #moonWhite
-
 header.sticky > .introtext {
-    color: #fff;
+    color: #fff !important;
 }
 
 header.sticky > nav > #navList > li > .navLinks {
     color: #fff;
 }
-
 
 .hamburgerWhite {
     display: none;
@@ -50,6 +47,22 @@ header.sticky > nav > #navList > li > .navLinks {
 
 .introtext {
     color: #333;
+}
+
+#sunWhite {
+    display: none;
+}
+
+#moonWhite {
+    display: none;
+}
+
+header.sticky > nav > #darkModeToggle > #moonBlack {
+    display: none !important;
+}
+
+header.sticky > nav > #darkModeToggle > #moonWhite {
+    display: block !important;
 }
 
 /* END HEADER */

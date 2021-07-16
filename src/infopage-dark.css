@@ -17,6 +17,14 @@ body {
     display: none;
 }
 
+#moonWhite {
+    display: none;
+}
+
+#moonBlack {
+    display: none;
+}
+
 /* END HEADER */
 
 /* RESULTS AREA */

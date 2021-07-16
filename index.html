@@ -35,7 +35,9 @@
         </ul>
 
         <button id='darkModeToggle' onclick='changeCSS()'>
-            <img src='./img/sun-black.svg' alt='toggle icon' id='toggleIcon'>
+            <img src='./img/sun-white.svg' alt='toggle icon' id='sunWhite'>
+            <img src='./img/moon-black.svg' alt='toggle icon' id='moonBlack'>
+            <img src='./img/moon-white.svg' alt='toggle icon' id='moonWhite'>
         </button>
     </nav>
     <button id='hamburgerBtn'>
@@ -135,7 +137,7 @@
     </button>
     <img src='./img/canadacoingray.svg' id='menuLogo' alt='cada-coin'>
     <hr>
-    <ul id='menuList'>
+    <ul class='menuList'>
         <li>
             <div class='menuItem'>
                 <img src='./img/money-white.svg' alt='icon' class='menuIcon'>
@@ -161,9 +163,18 @@
             </div>
         </li>
     </ul>
-    <button id='darkModeMenu' onclick='changeCSS()'>
-        <img src='./img/sun-black.svg' alt='toggle icon' id='menuDarkModeIcon'>
-    </button>
+    <hr>
+    <ul class='menuList'>
+        <li>
+            <div class='menuItem'>
+                <!-- Image src is changed with JS -->
+                <img src='./img/sun-black.svg' alt='toggle icon' id='menuDarkModeIcon' class='menuIcon'>
+                <a onclick='changeCSS()' target='_blank' class='menuLinks' id='darkModeText'>
+                    <!-- Text injected from JS -->
+                </a>
+            </div>
+        </li>
+    </ul>
 </div>
 
 
@@ -298,38 +309,41 @@
     // END FOOTER
 
     // DARK MODE
-    const backgroundLogo = document.getElementById('backgroundLogo')
-    const toggleIcon = document.getElementById('toggleIcon')
-    const menuToggleIcon = document.getElementById('menuDarkModeIcon')
+    const backgroundLogo = document.getElementById('backgroundLogo');
+    const toggleIcon = document.getElementById('toggleIcon');
+    const menuToggleIcon = document.getElementById('menuDarkModeIcon');
+    const darkModeText = document.getElementById('darkModeText');
+    const header = document.getElementsByTagName('header').item(0)
 
-    function changeCSS() {
+     function changeCSS() {
         let oldLink = document.getElementsByTagName('link').item(0);
         let newLink = document.createElement('link');
 
         newLink.setAttribute('rel', 'stylesheet');
         newLink.setAttribute('type', 'text/css');
 
+        // The following if statement is reversed to get it right in the frontend, most likely an async issue
         if (oldLink.getAttribute('href').includes('infopage-dark')) {
             newLink.setAttribute('href', './src/infopage.css');
             backgroundLogo.setAttribute('src', './img/canadacoingray.svg');
-            toggleIcon.setAttribute('src', './img/moon-black.svg')
-            menuToggleIcon.setAttribute('src','./img/moon-white.svg' )
+            menuToggleIcon.setAttribute('src', './img/moon-white.svg');
+            darkModeText.innerText = 'Dark theme';
         } else {
             newLink.setAttribute('href', './src/infopage-dark.css');
             backgroundLogo.setAttribute('src', './img/canadacoindark.svg');
-            toggleIcon.setAttribute('src','./img/sun-white.svg')
-            menuToggleIcon.setAttribute('src','./img/sun-white.svg' )
+            menuToggleIcon.setAttribute('src', './img/sun-white.svg');
+            darkModeText.innerText = 'Light theme';
         }
         document.getElementsByTagName('head').item(0).replaceChild(newLink, oldLink);
-        localStorage.setItem('darkMode', newLink.getAttribute('href'))
+        localStorage.setItem('darkMode', newLink.getAttribute('href'));
 
     }
 
     function setInitialCss() {
-        const initialCss = localStorage.getItem('darkMode')
+        const initialCss = localStorage.getItem('darkMode');
 
-        let oldLink = document.getElementsByTagName('link').item(0)
-        let newLink = document.createElement('link')
+        let oldLink = document.getElementsByTagName('link').item(0);
+        let newLink = document.createElement('link');
 
         newLink.setAttribute('rel', 'stylesheet');
         newLink.setAttribute('type', 'text/css');
@@ -337,18 +351,17 @@
         document.getElementsByTagName('head').item(0).replaceChild(newLink, oldLink);
 
         if (initialCss.includes('infopage-dark')) {
-            backgroundLogo.setAttribute('src', './img/canadacoindark.svg')
-            toggleIcon.setAttribute('src', './img/sun-white.svg')
-            menuToggleIcon.setAttribute('src','./img/sun-white.svg' )
+            backgroundLogo.setAttribute('src', './img/canadacoindark.svg');
+            menuToggleIcon.setAttribute('src', './img/sun-white.svg');
+            darkModeText.innerText = 'Light theme';
         } else {
             backgroundLogo.setAttribute('src', './img/canadacoingray.svg');
-            toggleIcon.setAttribute('src', './img/moon-black.svg')
-            menuToggleIcon.setAttribute('src','./img/moon-white.svg' )
+            menuToggleIcon.setAttribute('src', './img/moon-white.svg')
+            darkModeText.innerText = 'Dark theme';
         }
     }
 
-    setInitialCss()
-
+    setInitialCss();
     // END DARK MODE
 
 </script>
