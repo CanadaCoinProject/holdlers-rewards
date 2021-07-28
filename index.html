@@ -180,7 +180,10 @@
 
 <script>
     ////navbar
-    top20();
+   var walletarray = [];
+    top20list(walletarray);
+   // console.log(walletarray);
+    
     if (!localStorage.getItem("darkMode")){
         localStorage.setItem('darkMode', './src/infopage.css');
     }
@@ -324,7 +327,40 @@
    
     
     // TOP 20 HOLDERS
+    async function top20list(walletarray){
+        
+        var request = new XMLHttpRequest()
+        
+        request.open('GET', 'https://api.covalenthq.com/v1/56/tokens/0x221afb058453b1d228bfdac3b1aab42f41e37489/token_holders/?key=ckey_5de80c3373cb472d9dac5', true)
+        request.onload = function () {
+       
+        var data = JSON.parse(this.response);
+
+        if (request.status >= 200 && request.status < 400) {
+            
+            for (let i = 0; i < 20; i++){   
+             var wallets = wallets + data.data.items[i].address.toString() + ' ';
+                walletarray = wallets.split(" ");
+            }
+
+        } else {console.log('error')}
+
+        
+        sessionStorage.setItem("topwallets", walletarray);
+        top20();
+            }
+            
+        request.send();
+       
+        
+        
+        return walletarray;
+        
+    }
+
+
     async function top20(){
+
          for (let i = 0; i < 20; i++) {
         let topanswer;
         let listItemContainer = document.createElement('a');
@@ -337,45 +373,59 @@
         addressBox.className = 'holderInfoBox';
         balanceBox.className = 'holderInfoBox';
         earningsBox.className = 'holderInfoBox';
-        let topholders = ["0x5019d6797b7a679ca8573d82d38a994fa355d723", "0xe9af29e175a5629618e9b53c945f57ed9661f0b7", "0xa6c8626ef2a55dea2f5b80c55ecca5cbf941c585", "0xd01aaf48710556c5297d72c4c938561ae57a1466", "0xfb8aa6c46b0f8a7f089b2cbd342b97bf0d0dcb26", "0x05f89b063e2656f9b42cfff9865a675495875c6d", "0xc849bad49dc1516f86efe999df950d0b2c4529a7", "0x0c9435abd2eabf5426b58b4e1152326792d90aba", "0x8c89f04716a06bbba2f8056eebdbe009171285e5", "0xdd7d38cd829ffc5f39ff89fac0f510c58f40ed45", "0x1d107c9149e3f75a9404bac353d0cf2fd3c4b7d1", "0x29e257e06cf864840388a75e202cce33c820922d", "0x2d1fdb21dd7388c20250c598b0603ac93b06a6bf", "0x2f0a13518fcf6bd814f576d369143d27fcc0a3a3", "0xd06075f81d8dd5081d90c0b66c686d011d4763d3", "0xbc396e3be72c628eeb5e9075ee3c6b680c934d9f", "0xf7205a618d4347cd964d23ffcd89971ea4be3d9b", "0xbdfa97458aff993f2b44bf27b757fd374594766f",
-        "0x4ac5dafd9dc6af1c31d1f21a59e9403104e0d974", "0xe6648693ea8e43965146f563b191fba33631dd60",
-        "0xe75928a8882a87452d59bb91165a7e309315e326"];
-        
-
-
-        let address = topholders[i];
        
-        let result = await getAccountInfo(address);
+        //console.log(topholders)
+        let topwalls = sessionStorage.getItem("topwallets").split(",");;
         
-        let earnings = '700,000,000';
 
-        addressBox.innerHTML = `
-        <p id='addressText'>
-            <span class='prefix'>Address: </span>
-            ${address}
-        </p>`;
+        let address = topwalls[i];
+        if (!topwalls[i].includes("000000")){
+            let result = await getAccountInfo(address);
+            if (result.accountReward.toString() == 0){
+         
+            }
+            else{
+                      
+                
+                
+addressBox.innerHTML = `
+<p id='addressText'>
+    <span class='prefix'>Address: </span>
+    ${address}
+</p>`;
 
-        balanceBox.innerHTML = `
-        <p id='addressText'>
-            <span class='prefix'>Balance: </span>
-            ${result.realBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " CADA"}
-        </p>`;
+balanceBox.innerHTML = `
+<p id='addressText'>
+    <span class='prefix'>Balance: </span>
+    ${result.realBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " CADA"}
+</p>`;
 
-        earningsBox.innerHTML = `
-        <p id='earningsText'>
-            <span class='prefix'>Earnings: </span>
-            ${result.accountReward.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " CADA"}
-        </p>`;
+earningsBox.innerHTML = `
+<p id='earningsText'>
+    <span class='prefix'>Earnings: </span>
+    ${result.accountReward.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " CADA"}
+</p>`;
 
-        listItemContainer.appendChild(addressBox);
-        listItemContainer.appendChild(balanceBox);
-        listItemContainer.appendChild(earningsBox);
+listItemContainer.appendChild(addressBox);
+listItemContainer.appendChild(balanceBox);
+listItemContainer.appendChild(earningsBox);
 
-        document.getElementById('topTwentyList').appendChild(listItemContainer);
-        unfade(listItemContainer)
-        listItemContainer.href = "https://bscscan.com/token/0x221afb058453b1d228bfdac3b1aab42f41e37489?a="+address;
-        listItemContainer.setAttribute("target", "_blank");
+document.getElementById('topTwentyList').appendChild(listItemContainer);
+unfade(listItemContainer)
+listItemContainer.href = "https://bscscan.com/token/0x221afb058453b1d228bfdac3b1aab42f41e37489?a="+address;
+listItemContainer.setAttribute("target", "_blank");
+            }
+
+            
+
+        }
+        
+       
+        
+        
+       
     }
+    ////
     }
 
     function unfade(element) {
